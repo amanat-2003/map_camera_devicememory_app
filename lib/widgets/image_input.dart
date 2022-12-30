@@ -17,7 +17,7 @@ class _ImageInputState extends State<ImageInput> {
       children: [
         Container(
           width: 208,
-          height: 117
+          height: 117,
           decoration:
               BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
           child: _storedImage != null
