@@ -32,14 +32,10 @@ class _LocationInputState extends State<LocationInput> {
       _previewImageUrl = staticMapImageUrl;
       _isLoading = false;
     });
-    final generatedAddress = await LocationHelper.getPlaceAddress(
-      locData.latitude,
-      locData.longitude,
-    );
+    
     widget.onSelectLocation(
       locData.latitude,
       locData.longitude,
-      generatedAddress,
     );
   }
 
@@ -63,15 +59,10 @@ class _LocationInputState extends State<LocationInput> {
     setState(() {
       _previewImageUrl = staticMapImageUrl;
     });
-    final generatedAddress = await LocationHelper.getPlaceAddress(
-      selectedLocation.latitude,
-      selectedLocation.longitude,
-    );
 
     widget.onSelectLocation(
       selectedLocation.latitude,
       selectedLocation.longitude,
-      generatedAddress,
     );
     // ...
   }

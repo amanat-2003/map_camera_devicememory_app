@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/place.dart';
 import 'package:provider/provider.dart';
 
@@ -25,18 +24,23 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
     _pickedImage = pickedImage;
   }
 
-  void _selectLocation(double lat, double lng, String address) {
+  void _selectLocation(
+    double lat,
+    double lng,
+  ) {
     _pickedLocation = PlaceLocation(
       latitude: lat,
       longitude: lng,
-      address: address,
     );
   }
 
-  void _savePlace() {
-    if (_titleController.text.isEmpty || _pickedImage == null || _pickedLocation == null) {
+  void _savePlace() async {
+    if (_titleController.text.isEmpty ||
+        _pickedImage == null ||
+        _pickedLocation == null) {
       return;
     }
+    
     Provider.of<GreatPlaces>(context, listen: false)
         .addPlace(_titleController.text, _pickedImage, _pickedLocation);
     Navigator.of(context).pop();
