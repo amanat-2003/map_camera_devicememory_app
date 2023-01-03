@@ -19,24 +19,37 @@ class _LocationInputState extends State<LocationInput> {
   String _previewImageUrl;
   bool _isLoading = false;
 
+  void _showPreview({double latitude, double longitude}) {
+    final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
+      latitude: latitude,
+      longitude: longitude,
+    );
+    setState(() {
+      _previewImageUrl = staticMapImageUrl;
+    });
+  }
+
   Future<void> _getCurrentUserLocation() async {
     setState(() {
       _isLoading = true;
     });
-    final locData = await Location().getLocation();
-    final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
-      latitude: locData.latitude,
-      longitude: locData.longitude,
-    );
-    setState(() {
-      _previewImageUrl = staticMapImageUrl;
-      _isLoading = false;
-    });
-    
-    widget.onSelectLocation(
-      locData.latitude,
-      locData.longitude,
-    );
+    try {
+      final locData = await Location().getLocation();
+      _showPreview(
+        latitude: locData.latitude,
+        longitude: locData.longitude,
+      );
+      setState(() {
+        _isLoading = false;
+      });
+
+      widget.onSelectLocation(
+        locData.latitude,
+        locData.longitude,
+      );
+    } catch (error) {
+      return;
+    }
   }
 
   Future<void> _selectOnMap() async {
@@ -52,13 +65,10 @@ class _LocationInputState extends State<LocationInput> {
     if (selectedLocation == null) {
       return;
     }
-    final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
+    await _showPreview(
       latitude: selectedLocation.latitude,
       longitude: selectedLocation.longitude,
     );
-    setState(() {
-      _previewImageUrl = staticMapImageUrl;
-    });
 
     widget.onSelectLocation(
       selectedLocation.latitude,
